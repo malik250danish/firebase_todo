@@ -34,8 +34,17 @@ const TodoItem = ({ todo }) => {
       <tr>
         <td>{todo.taskName}</td>
         <td>
-          <div className="badge bg-warning">{todo.status}</div>
+          {todo.status === "in progress" ? (
+            <div className="badge bg-primary">{todo.status}</div>
+          ) : todo.status === "in Testing" ? (
+            <div className="badge bg-warning">{todo.status}</div>
+          ) : todo.status === "Completed" ? (
+            <div className="badge bg-success">{todo.status}</div>
+          ) : (
+            <div className="badge bg-secondary">{todo.status}</div>
+          )}
         </td>
+
         <td>
           <button className="btn btn-danger" onClick={handleDelete}>
             Delete
@@ -65,6 +74,7 @@ const TodoItem = ({ todo }) => {
             <Form.Group controlId="formStatus">
               <Form.Label>Status</Form.Label>
               <Form.Control
+                className="form-select"
                 as="select"
                 value={editedStatus}
                 onChange={(e) => setEditedStatus(e.target.value)}

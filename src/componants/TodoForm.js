@@ -1,4 +1,3 @@
-// components/TodoForm.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../Redux/TodoSlice";
@@ -10,6 +9,8 @@ const TodoForm = () => {
   const dispatch = useDispatch();
   const [taskName, setTaskName] = useState("");
   const [status, setStatus] = useState("");
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,16 +36,52 @@ const TodoForm = () => {
         })
       );
 
+      // Show success alert
+      setSuccessAlert(true);
+
       // Clear the input fields after submitting
       setTaskName("");
       setStatus("");
     } catch (error) {
       console.error("Error saving todo:", error);
+
+      // Show error alert
+      setErrorAlert(true);
     }
   };
 
   return (
     <form className="card p-2" onSubmit={handleSubmit}>
+      {successAlert && (
+        <div
+          className="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          Task added successfully!
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+            onClick={() => setSuccessAlert(false)}
+          ></button>
+        </div>
+      )}
+      {errorAlert && (
+        <div
+          className="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          Error adding task. Please try again.
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+            onClick={() => setErrorAlert(false)}
+          ></button>
+        </div>
+      )}
       <div className="d-flex">
         <input
           type="text"
